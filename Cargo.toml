@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Erin <erin@hashbang.sh>"]
 
 [dependencies]
+strum = "0.10"
+strum_macros = "0.10"

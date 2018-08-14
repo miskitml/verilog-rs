@@ -1,4 +1,4 @@
-use ast::{BinaryOp, Dir, Edge, Ident, Trigger, UnaryOp};
+use ast::{Ident, Trigger};
 use std::fmt;
 
 /// Implemented by AST nodes to emit Verilog.
@@ -9,68 +9,6 @@ pub trait Codegen {
 impl fmt::Display for Ident {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.0)
-    }
-}
-
-impl fmt::Display for Dir {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let v = match *self {
-            Dir::In => "in",
-            Dir::Out => "out",
-        };
-
-        write!(f, "{}", v)
-    }
-}
-
-impl fmt::Display for Edge {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let v = match *self {
-            Edge::Rising => "posedge",
-            Edge::Falling => "negedge",
-        };
-
-        write!(f, "{}", v)
-    }
-}
-
-impl fmt::Display for BinaryOp {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use self::BinaryOp::*;
-        let v = match *self {
-            Add => "+",
-            Sub => "-",
-            Mul => "*",
-            Div => "/",
-
-            Eq => "==",
-            Neq => "!=",
-            Lt => "<",
-            Gt => ">",
-            Lte => "<=",
-            Gte => ">=",
-
-            Or => "||",
-            And => "&&",
-
-            BitOr => "|",
-            BitAnd => "&",
-            LShift => "<<",
-            RShift => ">>",
-        };
-
-        write!(f, "{}", v)
-    }
-}
-
-impl fmt::Display for UnaryOp {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use self::UnaryOp::*;
-        let v = match *self {
-            Not => "!",
-        };
-
-        write!(f, "{}", v)
     }
 }
 
