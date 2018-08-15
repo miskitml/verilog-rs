@@ -1,4 +1,4 @@
-use ast::{Ident, Trigger};
+use ast::{Assignment, Expression, Ident, Trigger};
 use std::fmt::{self, Write};
 
 /// Implemented by AST nodes to emit Verilog.
@@ -36,6 +36,28 @@ impl Codegen for Trigger {
         W: Write,
     {
         write!(w, "{} {}", self.edge, self.signal)
+    }
+}
+
+impl Codegen for Expression {
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write,
+    {
+        match self {
+            Expression::Ident(id) => id.gen(w),
+        }
+    }
+}
+
+impl Codegen for Assignment {
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write,
+    {
+        write!(w, "assign {lhs} = ", lhs = self.lhs)?;
+        self.rhs.gen(w)?;
+        write!(w, ";")
     }
 }
 

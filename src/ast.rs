@@ -42,6 +42,18 @@ pub struct Trigger {
     pub edge: Edge,
 }
 
+/// A verilog expression.
+#[derive(Debug)]
+pub enum Expression {
+    Ident(Ident),
+}
+
+/// A continuous assignment statement.
+pub struct Assignment {
+    pub lhs: Ident,
+    pub rhs: Expression,
+}
+
 /// Operators with arity two.
 #[derive(Debug, Display)]
 pub enum BinaryOp {
