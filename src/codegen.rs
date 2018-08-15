@@ -82,4 +82,14 @@ mod tests {
 
         assert_eq!(falling.to_string(), "negedge bar");
     }
+
+    #[test]
+    fn assignments() {
+        let assign = Assignment {
+            lhs: Ident::new("foo"),
+            rhs: Expression::Ident(Ident::new("bar")),
+        };
+
+        assert_eq!(assign.to_string(), "assign foo = bar;");
+    }
 }
