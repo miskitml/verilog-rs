@@ -52,6 +52,7 @@ pub struct Trigger {
 pub enum Expression {
     Ident(Ident),
     Literal(Literal),
+    BinaryOp(Box<BinaryOp>),
 }
 
 /// A continuous assignment statement.

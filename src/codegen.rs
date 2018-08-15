@@ -58,6 +58,11 @@ impl Codegen for Expression {
         match self {
             Expression::Ident(id) => id.gen(w),
             Expression::Literal(lit) => lit.gen(w),
+            Expression::BinaryOp(lit) => {
+                write!(w, "(")?;
+                lit.gen(w)?;
+                write!(w, ")")
+            }
         }
     }
 }
