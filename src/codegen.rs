@@ -1,9 +1,17 @@
 use ast::{Ident, Trigger};
-use std::fmt;
+use std::fmt::{self, Write};
 
 /// Implemented by AST nodes to emit Verilog.
 pub trait Codegen {
-    fn gen(&self) -> String;
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write;
+
+    fn to_string(&self) -> String {
+        let mut string = String::new();
+        self.gen(&mut string).unwrap();
+        string
+    }
 }
 
 impl fmt::Display for Ident {
@@ -14,14 +22,20 @@ impl fmt::Display for Ident {
 
 /// All AST nodes that impl `Display` get a free `Codegen` impl.
 impl<T: fmt::Display> Codegen for T {
-    fn gen(&self) -> String {
-        format!("{}", self)
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write,
+    {
+        write!(w, "{}", self)
     }
 }
 
 impl Codegen for Trigger {
-    fn gen(&self) -> String {
-        format!("{} {}", self.edge, self.signal)
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write,
+    {
+        write!(w, "{} {}", self.edge, self.signal)
     }
 }
 
@@ -37,13 +51,13 @@ mod tests {
             edge: Edge::Rising,
         };
 
-        assert_eq!(rising.gen(), "posedge foo");
+        assert_eq!(rising.to_string(), "posedge foo");
 
         let falling = Trigger {
             signal: Ident::new("bar"),
             edge: Edge::Falling,
         };
 
-        assert_eq!(falling.gen(), "negedge bar");
+        assert_eq!(falling.to_string(), "negedge bar");
     }
 }
