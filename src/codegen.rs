@@ -1,4 +1,4 @@
-use ast::{Assignment, Expression, Ident, Trigger};
+use ast::{Assignment, BinaryOp, Expression, Ident, Trigger};
 use std::fmt::{self, Write};
 
 /// Implemented by AST nodes to emit Verilog.
@@ -61,6 +61,17 @@ impl Codegen for Assignment {
     }
 }
 
+impl Codegen for BinaryOp {
+    fn gen<W>(&self, w: &mut W) -> fmt::Result
+    where
+        W: Write,
+    {
+        self.lhs.gen(w)?;
+        write!(w, " {} ", self.ty)?;
+        self.rhs.gen(w)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -91,5 +102,17 @@ mod tests {
         };
 
         assert_eq!(assign.to_string(), "assign foo = bar;");
+    }
+
+    #[test]
+    fn binary_op() {
+        use ast::BinaryOpTy;
+        let add = BinaryOp {
+            ty: BinaryOpTy::Add,
+            lhs: Expression::Ident(Ident::new("a")),
+            rhs: Expression::Ident(Ident::new("b")),
+        };
+
+        assert_eq!(add.to_string(), "a + b");
     }
 }

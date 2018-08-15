@@ -54,9 +54,16 @@ pub struct Assignment {
     pub rhs: Expression,
 }
 
+/// Binary operations
+pub struct BinaryOp {
+    pub ty: BinaryOpTy,
+    pub lhs: Expression,
+    pub rhs: Expression,
+}
+
 /// Operators with arity two.
 #[derive(Debug, Display)]
-pub enum BinaryOp {
+pub enum BinaryOpTy {
     #[strum(to_string="+")]
     Add,
     #[strum(to_string="-")]
@@ -96,7 +103,7 @@ pub enum BinaryOp {
 
 /// Operators with arity one.
 #[derive(Debug, Display)]
-pub enum UnaryOp {
+pub enum UnaryOpTy {
     #[strum(to_string="!")]
     Not,
 }
