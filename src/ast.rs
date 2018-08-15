@@ -14,6 +14,11 @@ impl Ident {
     }
 }
 
+#[derive(Debug)]
+pub enum Literal {
+    Integer(u64)
+}
+
 /// Port directionality.
 #[derive(Debug, Display)]
 pub enum Dir {
@@ -46,6 +51,7 @@ pub struct Trigger {
 #[derive(Debug)]
 pub enum Expression {
     Ident(Ident),
+    Literal(Literal),
 }
 
 /// A continuous assignment statement.
