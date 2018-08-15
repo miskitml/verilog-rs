@@ -55,12 +55,14 @@ pub enum Expression {
 }
 
 /// A continuous assignment statement.
+#[derive(Debug)]
 pub struct Assignment {
     pub lhs: Ident,
     pub rhs: Expression,
 }
 
 /// Binary operations
+#[derive(Debug)]
 pub struct BinaryOp {
     pub ty: BinaryOpTy,
     pub lhs: Expression,
